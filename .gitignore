@@ -1,0 +1,8 @@
+# dist
+build
+
+# build dependencies
+node_modules
+
+# DB
+test
