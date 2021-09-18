@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Alert, Button, FormGroup, Input, Label } from 'reactstrap';
+import { Alert, Button, FormGroup, Input, Label, Table } from 'reactstrap';
 import { getAll, add, addBalance, remove } from '../core/account';
 import type { Awaited } from '../types';
 
@@ -11,6 +11,60 @@ function getInputValue(selector: Selector) {
   const element = document.querySelector(selector) as HTMLInputElement | null;
   return element?.value || '';
 }
+
+function isSameDate(date1: Date, date2: Date) {
+  return date1.getDate() === date2.getDate()
+    && date1.getMonth() === date2.getMonth()
+    && date1.getFullYear() === date2.getFullYear();
+}
+
+const TableWrapper = ({ accounts }: { accounts: Account[]; }) => {
+  const today = new Date();
+  const dates = Array.from(Array(20)).map((x, i) => {
+    const date = new Date();
+    date.setDate(today.getDate() - i);
+    return date;
+  });
+
+  return (
+    <Table bordered>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Account</th>
+          {dates.map((date, i) => {
+            return (
+              <th key={i}>
+                {date.getFullYear()}-{date.getMonth() + 1}-{date.getDate()}
+              </th>
+            );
+          })}
+        </tr>
+      </thead>
+      <tbody>
+        {accounts.map(account => {
+          return (
+            <tr key={account.id}>
+              <th scope="row">{account.id}</th>
+              <td>{account.name}</td>
+              {dates.map((date, i) => {
+                const balance = account.balances.find(x => {
+                  return isSameDate(x.date, date);
+                });
+
+                return (
+                  <th key={i}>
+                    {balance?.amount || '-'}
+                  </th>
+                );
+              })}
+            </tr>
+          );
+        })}
+      </tbody>
+    </Table>
+  );
+};
 
 const Home = () => {
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -50,6 +104,7 @@ const Home = () => {
       <Alert color="primary">
         This is a primary alert — check it out!
       </Alert>
+      <TableWrapper accounts={accounts} />
       <FormGroup>
         <Label for="exampleEmail">Account Name</Label>
         <Input type="email" name="email" id="exampleEmail" placeholder="with a placeholder" value={name} onChange={({ target: { value } }) => {
