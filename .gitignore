@@ -6,3 +6,6 @@ node_modules
 
 # DB
 test
+
+# Logs
+yarn-error.log
