@@ -1,5 +1,6 @@
 import './App.module.css';
 import Home from './Home';
+import Dashboard from './Dashboard';
 
 import {
   BrowserRouter as Router,
@@ -15,9 +16,6 @@ function App() {
         <ul>
           <li>
             <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/about">About</Link>
           </li>
           <li>
             <Link to="/dashboard">Dashboard</Link>
@@ -36,6 +34,9 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Home />
+          </Route>
+          <Route path="/dashboard">
+            <Dashboard />
           </Route>
         </Switch>
       </div>

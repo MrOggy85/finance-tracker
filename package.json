@@ -37,6 +37,7 @@
     "reactstrap": "^8.10.0",
     "sqlite3": "^5.0.2",
     "typeorm": "^0.2.37",
+    "victory": "^36.0.0",
     "wait-on": "^5.2.1",
     "web-vitals": "^1.0.1"
   },
