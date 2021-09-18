@@ -9,7 +9,7 @@ export default class Balance {
   @Column()
   amount: number;
 
-  @Column()
+  @Column("datetime")
   date: Date;
 
   @ManyToOne(() => Account, account => account.balances, {

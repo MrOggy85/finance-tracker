@@ -9,19 +9,20 @@ async function getRepository() {
   return repository;
 }
 
-export async function add(amount: number, accountId: number) {
+function isSameDate(date1: Date, date2: Date) {
+  return date1.getDate() === date2.getDate()
+    && date1.getMonth() === date2.getMonth()
+    && date1.getFullYear() === date2.getFullYear();
+}
+
+export async function add(amount: number, accountId: number, date: Date) {
   const balance = new Balance();
   balance.amount = amount;
-  balance.date = new Date();
+  balance.date = date;
 
   const account = await getAccount(accountId);
-
-  if (account.balances) {
-    account.balances.push(balance);
-  } else {
-    account.balances = [balance];
-  }
-
+  const newBalances = account.balances.filter(x => !isSameDate(balance.date, x.date));
+  account.balances = [...newBalances, balance];
 
   const repository = await getRepository();
   await repository.save(balance);

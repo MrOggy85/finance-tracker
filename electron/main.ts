@@ -1,17 +1,10 @@
 import * as path from 'path';
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import * as isDev from 'electron-is-dev';
 import repo from './db/repo';
+import subscribe from './subscribe';
 
-ipcMain.on('repo', async (event, arg) => {
-  try {
-    const result = await repo(arg);
-    event.reply('repo-ok', result);
-  } catch (error) {
-    console.log('error', error);
-    event.reply('repo-error', error);
-  }
-});
+subscribe('repo', repo);
 
 function createWindow() {
   // Create the browser window.

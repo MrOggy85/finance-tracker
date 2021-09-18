@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Alert, Button, FormGroup, Input, Label } from 'reactstrap';
-// import '../db-test';
 import { getAll, add, addBalance, remove } from '../core/account';
 import type { Awaited } from '../types';
 
@@ -9,16 +8,13 @@ type Account = Awaited<ReturnType<typeof getAll>>[0];
 type Selector = Parameters<typeof document['querySelector']>[0];
 
 function getInputValue(selector: Selector) {
-  const hello = document.querySelector(selector) as HTMLInputElement | null;
-  console.log('hello', hello, hello?.value);
-  return hello?.value || '';
+  const element = document.querySelector(selector) as HTMLInputElement | null;
+  return element?.value || '';
 }
 
 const Home = () => {
   const [accounts, setAccounts] = useState<Account[]>([]);
-  console.log('accounts', accounts);
   const [name, setName] = useState('');
-  const [balance, setBalance] = useState('');
 
   useEffect(() => {
     const init = async () => {
@@ -42,8 +38,8 @@ const Home = () => {
     };
   };
 
-  const onAddBalance = async (id: number, amount: number) => {
-    await addBalance(amount, id);
+  const onAddBalance = async (id: number, amount: number, date: Date) => {
+    await addBalance(amount, id, date);
     const a = await getAll();
     setAccounts(a);
   };
@@ -64,16 +60,19 @@ const Home = () => {
       {accounts.map((x) => (
         <Alert key={x.id} color="success">
           {x.name}
-          {x.balances?.map(x => (
-            <p>{x.amount}</p>
+          {x.balances?.sort((a, b) => {
+            return a.date.getTime() < b.date.getTime() ? 1 : -1;
+          }).map(x => (
+            <p>{x.amount} - {x.date.toDateString()}</p>
           ))}
           <FormGroup>
-            <Input type="email" id={`balance-${x.id}`} placeholder="enter new balance" />
+            <Input type="number" id={`balance-${x.id}`} placeholder="enter new balance" />
+            <Input type="date" id={`balance-date-${x.id}`} placeholder="date" />
 
             <Button onClick={() => {
               const val = getInputValue(`#balance-${x.id}`);
-              console.log('id', x.id);
-              onAddBalance(x.id, Number(val));
+              const date = getInputValue(`#balance-date-${x.id}`);
+              onAddBalance(x.id, Number(val), new Date(date));
             }} color="success">Add Balance</Button>
           </FormGroup>
           <Button onClick={onDelete(x.id)} color="danger">Delete</Button>
