@@ -18,7 +18,15 @@ function isSameDate(date1: Date, date2: Date) {
     && date1.getFullYear() === date2.getFullYear();
 }
 
-const TableWrapper = ({ accounts }: { accounts: Account[]; }) => {
+function displayInYen(amount: number) {
+  return new Intl.NumberFormat('ja-JP', {
+    style: 'currency',
+    currency: 'JPY',
+    minimumFractionDigits: 0
+  }).format(amount);
+}
+
+const TableWrapper = ({ accounts, total }: { accounts: Account[]; total: number; }) => {
   const today = new Date();
   const dates = Array.from(Array(20)).map((x, i) => {
     const date = new Date();
@@ -53,14 +61,19 @@ const TableWrapper = ({ accounts }: { accounts: Account[]; }) => {
                 });
 
                 return (
-                  <th key={i}>
-                    {balance?.amount || '-'}
-                  </th>
+                  <td key={i}>
+                    {balance?.amount ? displayInYen(balance.amount) : '-'}
+                  </td>
                 );
               })}
             </tr>
           );
         })}
+        <tr>
+          <th scope="row"></th>
+          <td>Total</td>
+          <th>{displayInYen(total)}</th>
+        </tr>
       </tbody>
     </Table>
   );
@@ -69,6 +82,15 @@ const TableWrapper = ({ accounts }: { accounts: Account[]; }) => {
 const Home = () => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [name, setName] = useState('');
+
+  let total = 0;
+  accounts.forEach(x => {
+    const amount = x.balances.sort((a, b) => {
+      return a.date.getTime() < b.date.getTime() ? 1 : -1;
+    })?.[0]?.amount;
+
+    total += amount || 0;
+  });
 
   useEffect(() => {
     const init = async () => {
@@ -104,7 +126,7 @@ const Home = () => {
       <Alert color="primary">
         This is a primary alert — check it out!
       </Alert>
-      <TableWrapper accounts={accounts} />
+      <TableWrapper accounts={accounts} total={total} />
       <FormGroup>
         <Label for="exampleEmail">Account Name</Label>
         <Input type="email" name="email" id="exampleEmail" placeholder="with a placeholder" value={name} onChange={({ target: { value } }) => {
