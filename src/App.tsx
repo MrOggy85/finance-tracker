@@ -13,7 +13,6 @@ import { Nav, NavItem, NavLink } from 'reactstrap';
 
 function App() {
   let location = useLocation();
-  console.log('location', location);
   return (
     <>
       <Nav tabs>
@@ -34,10 +33,8 @@ function App() {
         <Route path="/dashboard">
           <Dashboard />
         </Route>
-        <Route path="/future">
-          <Future />
-        </Route>
       </Switch>
+      <Future visible={location.pathname === '/future'} />
     </>
   );
 }
