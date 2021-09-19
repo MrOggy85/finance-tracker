@@ -10,7 +10,7 @@ import {
   useLocation
 } from 'react-router-dom';
 import { Nav, NavItem, NavLink } from 'reactstrap';
-
+import Prestia from './Prestia';
 
 function App() {
   let location = useLocation();
@@ -29,6 +29,9 @@ function App() {
         <NavItem>
           <NavLink className={styles.linkWrapper} active={window.location.pathname === '/daily-check-in'}> <Link className={styles.link} to="/daily-check-in">Daily Check-In</Link></NavLink>
         </NavItem>
+        <NavItem>
+          <NavLink className={styles.linkWrapper} active={window.location.pathname === '/prestia'}> <Link className={styles.link} to="/prestia">Prestia</Link></NavLink>
+        </NavItem>
       </Nav>
       <Switch>
         <Route exact path="/">
@@ -40,6 +43,7 @@ function App() {
       </Switch>
       <Future visible={location.pathname === '/future'} />
       <DailyCheckIn visible={location.pathname === '/daily-check-in'} />
+      <Prestia visible={location.pathname === '/prestia'} />
     </>
   );
 }

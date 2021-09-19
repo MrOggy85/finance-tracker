@@ -9,3 +9,6 @@ test
 
 # Logs
 yarn-error.log
+
+# Env files
+.env
