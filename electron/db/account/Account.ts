@@ -1,3 +1,4 @@
+import Entry from "../entry/Entry";
 import Balance from "../balance/Balance";
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 
@@ -11,4 +12,7 @@ export default class Account {
 
   @OneToMany(() => Balance, balance => balance.account)
   balances: Balance[];
+
+  @OneToMany(() => Entry, entry => entry.account)
+  entires: Entry[];
 }

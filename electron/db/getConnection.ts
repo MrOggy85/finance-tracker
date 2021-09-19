@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { Connection, createConnection } from "typeorm";
 import Account from "./account/Account";
 import Balance from "./balance/Balance";
+import Entry from "./entry/Entry";
 
 let connection: Connection;
 
@@ -13,7 +14,7 @@ async function getConnection() {
     type: "sqlite",
     database: "test",
     synchronize: true,
-    entities: [Account, Balance],
+    entities: [Account, Balance, Entry],
   });
 
   return connection;
