@@ -2,6 +2,7 @@ import styles from './App.module.css';
 import Home from './Home';
 import Dashboard from './Dashboard';
 import Future from './Future';
+import DailyCheckIn from './DailyCheckIn';
 import {
   Switch,
   Route,
@@ -25,6 +26,9 @@ function App() {
         <NavItem>
           <NavLink className={styles.linkWrapper} active={window.location.pathname === '/future'}> <Link className={styles.link} to="/future">Future</Link></NavLink>
         </NavItem>
+        <NavItem>
+          <NavLink className={styles.linkWrapper} active={window.location.pathname === '/daily-check-in'}> <Link className={styles.link} to="/daily-check-in">Daily Check-In</Link></NavLink>
+        </NavItem>
       </Nav>
       <Switch>
         <Route exact path="/">
@@ -35,6 +39,7 @@ function App() {
         </Route>
       </Switch>
       <Future visible={location.pathname === '/future'} />
+      <DailyCheckIn visible={location.pathname === '/daily-check-in'} />
     </>
   );
 }

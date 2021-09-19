@@ -21,7 +21,11 @@ const InputField = ({ label, value, onChange, displayAfter, disabled, step }: In
   </InputGroup>
 );
 
-const Future = () => {
+type Props = {
+  visible: boolean;
+};
+
+const Future = ({ visible }: Props) => {
   const [initAmount, setInitAmount] = useState(2000000);
   const [monthlySavingAmount, setMonthlySavingAmount] = useState(300000);
   const [birthYear, setBirthYear] = useState(1985);
@@ -52,6 +56,10 @@ const Future = () => {
 
   const displayMonthlySaving = `${displayInYen(monthlySavingAmount)} Percentage of salary: ${(((monthlySavingAmount * 12) / yearlySalary) * 100).toFixed(0)}%`;
   const displayRetirementYear = `Years: ${years} (Retirement Year: ${retirementYear + currentYear})`;
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <Container className="themed-container">
