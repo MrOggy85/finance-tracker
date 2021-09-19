@@ -1,4 +1,4 @@
-import type { Account } from '../../electron/db/account/type';
+import type Account from '../../electron/db/account/Account';
 import type { Param } from '../../electron/db/repo';
 
 const { ipcRenderer } = window.require('electron');

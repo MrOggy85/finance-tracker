@@ -132,8 +132,8 @@ const Home = () => {
           {x.name}
           {x.balances?.sort((a, b) => {
             return a.date.getTime() < b.date.getTime() ? 1 : -1;
-          }).map(x => (
-            <p>{x.amount} - {x.date.toDateString()}</p>
+          }).map(balance => (
+            <p key={balance.id}>{balance.amount} - {balance.date.toDateString()}</p>
           ))}
           <FormGroup>
             <Input type="number" id={`balance-${x.id}`} placeholder="enter new balance" />

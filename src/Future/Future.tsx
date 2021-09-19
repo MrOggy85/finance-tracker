@@ -50,7 +50,6 @@ const Future = ({ visible }: Props) => {
   let retirementFund = amount;
   for (let index = 0; index < deathAge - retirementYear; index++) {
     const yearlyInterest = retirementFund > 0 ? retirementFund * interest : 0;
-    console.log('yearlyInterest', yearlyInterest);
     retirementFund = retirementFund - yearlySalary + yearlyInterest;
   }
 
