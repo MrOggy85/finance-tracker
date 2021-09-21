@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Container, FormGroup, Input, Label, ListGroup, ListGroupItem, Row } from 'reactstrap';
+import { Container, FormGroup, Input, Label, ListGroup, ListGroupItem } from 'reactstrap';
 import styles from './styles.module.css';
 
 type Props = {

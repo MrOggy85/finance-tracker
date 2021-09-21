@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Alert, Container, Input, InputGroup, InputGroupAddon, InputGroupText } from "reactstrap";
+import { Container, Input, InputGroup, InputGroupAddon, InputGroupText } from "reactstrap";
+import Alert from 'react-bootstrap/Alert';
 import displayInYen from "../core/displayInYen";
 
 type InputFieldProps = {
