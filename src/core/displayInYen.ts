@@ -1,5 +1,5 @@
 function displayInYen(amount: number) {
-  return new Intl.NumberFormat('ja-JP', {
+  return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'JPY',
     minimumFractionDigits: 0
