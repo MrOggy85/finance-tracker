@@ -1,8 +1,11 @@
 import { ComponentProps, useEffect, useState } from 'react';
-import { Container, DropdownItem, DropdownMenu, DropdownToggle, Input, InputGroup, InputGroupAddon, InputGroupButtonDropdown, InputGroupText } from 'reactstrap';
+import { Button, Container, DropdownItem, DropdownMenu, DropdownToggle, Input, InputGroup, InputGroupAddon, InputGroupButtonDropdown, InputGroupText } from 'reactstrap';
 import format from 'date-fns/format';
 import type Account from '../../electron/db/account/Account';
-import { getAll } from '../core/account';
+import type Category from '../../electron/db/category/Category';
+import { getAll as getAllAccount, addEntry } from '../core/db/account';
+import { getAll as getAllCategories } from '../core/db/category';
+
 
 type InputFieldProps = {
   label: string;
@@ -32,25 +35,64 @@ const InputField = ({ label, value, onChange, displayAfter, disabled, step, type
 
 type Props = {
   visible: boolean;
+  onChosenAccount?: (account: Account | null) => void;
 };
 
-const Entry = ({ visible }: Props) => {
+const Entry = ({ visible, onChosenAccount }: Props) => {
   const [amount, setAmount] = useState<number>(0);
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [choosenAccount, setChoosenAccount] = useState<Account | null>(null);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
+  const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [date, setDate] = useState(new Date());
   const [description, setDescription] = useState('');
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [choosenCategory, setChoosenCategory] = useState<Category | null>(null);
 
-  const toggleDropDown = () => setDropdownOpen(!dropdownOpen);
+  const toggleAccountDropDown = () => setAccountDropdownOpen(!accountDropdownOpen);
+  const toggleCategoryDropDown = () => setCategoryDropdownOpen(!categoryDropdownOpen);
 
   useEffect(() => {
     const init = async () => {
-      const a = await getAll();
+      const a = await getAllAccount();
       setAccounts(a);
+
+      const c = await getAllCategories();
+      setCategories(c);
     };
     init();
   }, []);
+
+  const onAddClick = async () => {
+    if (!choosenAccount) {
+      alert('No Chosen Account!');
+      return;
+    }
+    if (!choosenCategory) {
+      alert('No Chosen Category!');
+      return;
+    }
+
+    try {
+      await addEntry({
+        amount,
+        date,
+        description,
+      }, choosenAccount.id, choosenCategory.id);
+    } catch (err) {
+      console.error(err);
+      alert(`DB error: ${err}`);
+    }
+
+    setAmount(0);
+    setDate(new Date());
+    setDescription('');
+    setChoosenCategory(null);
+    setChoosenAccount(null);
+    if (onChosenAccount) {
+      onChosenAccount(null);
+    }
+  };
 
   return !visible ? null : (
     <Container>
@@ -61,11 +103,12 @@ const Entry = ({ visible }: Props) => {
         onChange={setAmount}
         displayAfter="JPY"
       />
+
       <InputGroup>
         <InputGroupAddon addonType="prepend">
           <InputGroupText>Account</InputGroupText>
         </InputGroupAddon>
-        <InputGroupButtonDropdown addonType="append" isOpen={dropdownOpen} toggle={toggleDropDown}>
+        <InputGroupButtonDropdown addonType="append" isOpen={accountDropdownOpen} toggle={toggleAccountDropDown}>
           <DropdownToggle caret color="primary">
             {choosenAccount?.name || 'Choose Account'}
           </DropdownToggle>
@@ -77,6 +120,10 @@ const Entry = ({ visible }: Props) => {
                   throw new Error(`No Account fouund... ${x.id}`);
                 }
                 setChoosenAccount(acc);
+                if (onChosenAccount) {
+                  onChosenAccount(acc);
+                }
+
               }}>{x.name}</DropdownItem>
             ))}
           </DropdownMenu>
@@ -104,6 +151,31 @@ const Entry = ({ visible }: Props) => {
           onChange={({ target: { value } }) => { setDescription(value); }}
         />
         <InputGroupAddon addonType="append">{`${description.length} characters`}</InputGroupAddon>
+      </InputGroup>
+
+      <InputGroup>
+        <InputGroupAddon addonType="prepend">
+          <InputGroupText>Category</InputGroupText>
+        </InputGroupAddon>
+        <InputGroupButtonDropdown addonType="append" isOpen={categoryDropdownOpen} toggle={toggleCategoryDropDown}>
+          <DropdownToggle caret color="primary">
+            {choosenCategory?.name || 'Choose Category'}
+          </DropdownToggle>
+          <DropdownMenu>
+            {categories.map(x => (
+              <DropdownItem key={x.id} onClick={() => {
+                const cat = categories.find(c => c.id === x.id);
+                if (!cat) {
+                  throw new Error(`No Category fouund... ${x.id}`);
+                }
+                setChoosenCategory(cat);
+              }}>{x.name}</DropdownItem>
+            ))}
+          </DropdownMenu>
+        </InputGroupButtonDropdown>
+      </InputGroup>
+      <InputGroup>
+        <Button color="primary" onClick={onAddClick}>Add</Button>
       </InputGroup>
 
     </Container>

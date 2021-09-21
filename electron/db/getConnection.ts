@@ -3,6 +3,7 @@ import { Connection, createConnection } from "typeorm";
 import Account from "./account/Account";
 import Balance from "./balance/Balance";
 import Entry from "./entry/Entry";
+import Category from "./category/Category";
 
 let connection: Connection;
 
@@ -14,7 +15,7 @@ async function getConnection() {
     type: "sqlite",
     database: "test",
     synchronize: true,
-    entities: [Account, Balance, Entry],
+    entities: [Account, Balance, Entry, Category],
   });
 
   return connection;

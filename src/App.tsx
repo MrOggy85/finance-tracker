@@ -9,32 +9,48 @@ import {
   Link,
   useLocation
 } from 'react-router-dom';
-import { Nav, NavItem, NavLink } from 'reactstrap';
 import Prestia from './Prestia';
-import Entry from './Entry';
+import Nav from 'react-bootstrap/Nav';
+import NavItem from 'react-bootstrap/NavItem';
+import Category from './Category';
+import QuickEntry from './QuickEntry';
+
+type LinkItemProps = {
+  url: string;
+  text: string;
+};
+
+const LinkItem = ({ url, text }: LinkItemProps) => {
+  return (
+    <Link className={`${styles.link} ${window.location.pathname === url ? 'active' : ''}`} to={url}>{text}</Link>
+  );
+};
 
 function App() {
   let location = useLocation();
   return (
     <>
-      <Nav tabs>
+      <Nav variant="tabs">
         <NavItem>
-          <NavLink className={styles.linkWrapper} active={window.location.pathname === '/'}><Link className={styles.link} to="/">Home</Link></NavLink>
+          <LinkItem url="/" text="Home" />
         </NavItem>
         <NavItem>
-          <NavLink className={styles.linkWrapper} active={window.location.pathname === '/dashboard'}> <Link className={styles.link} to="/dashboard">Dashboard</Link></NavLink>
+          <LinkItem url="/dashboard" text="Dashboard" />
         </NavItem>
         <NavItem>
-          <NavLink className={styles.linkWrapper} active={window.location.pathname === '/future'}> <Link className={styles.link} to="/future">Future</Link></NavLink>
+          <LinkItem url="/future" text="Future" />
         </NavItem>
         <NavItem>
-          <NavLink className={styles.linkWrapper} active={window.location.pathname === '/daily-check-in'}> <Link className={styles.link} to="/daily-check-in">Daily Check-In</Link></NavLink>
+          <LinkItem url="/daily-check-in" text="Check-In" />
         </NavItem>
         <NavItem>
-          <NavLink className={styles.linkWrapper} active={window.location.pathname === '/entry'}> <Link className={styles.link} to="/entry">Entry</Link></NavLink>
+          <LinkItem url="/entry" text="Entry" />
         </NavItem>
         <NavItem>
-          <NavLink className={styles.linkWrapper} active={window.location.pathname === '/prestia'}> <Link className={styles.link} to="/prestia">Prestia</Link></NavLink>
+          <LinkItem url="/category" text="Category" />
+        </NavItem>
+        <NavItem>
+          <LinkItem url="/prestia" text="Prestia" />
         </NavItem>
       </Nav>
       <Switch>
@@ -48,7 +64,8 @@ function App() {
       <Future visible={location.pathname === '/future'} />
       <DailyCheckIn visible={location.pathname === '/daily-check-in'} />
       <Prestia visible={location.pathname === '/prestia'} />
-      <Entry visible={location.pathname === '/entry'} />
+      <QuickEntry visible={location.pathname === '/entry'} />
+      <Category visible={location.pathname === '/category'} />
     </>
   );
 }

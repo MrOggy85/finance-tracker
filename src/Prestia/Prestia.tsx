@@ -1,7 +1,8 @@
 import type { WebviewTag } from "electron";
 import { useRef } from "react";
-import { Button } from "reactstrap";
+import { Button, Col, Container, Row } from "reactstrap";
 import BrowserTab from "../components/BrowserTab";
+import Entry from "../Entry";
 
 const PRESTIA_URL = 'https://login.smbctb.co.jp/ib/portal/POSNIN1prestiatop.prst?LOCALE=en_JP';
 
@@ -66,21 +67,28 @@ const Prestia = ({ visible }: Props) => {
     });
   };
 
-  return !visible ? null : (
-    <div>
-      <BrowserTab
-        src={PRESTIA_URL}
-        bottomMargin={88}
-        webViewRef={webViewRef}
-      />
-      <div style={{
-        height: 40,
-        backgroundColor: '#1C4733',
-        paddingLeft: 20,
-      }}>
-        <Button onClick={onLoginClick} color="success">Login</Button>{' '}
-      </div>
-    </div>
+  return (
+    <Container style={{ display: visible ? 'block' : 'none' }}>
+      <Row>
+        <Col xs={4}>
+          <Entry visible />
+        </Col>
+        <Col>
+          <BrowserTab
+            src={PRESTIA_URL}
+            bottomMargin={88}
+            webViewRef={webViewRef}
+          />
+          <div style={{
+            height: 40,
+            backgroundColor: '#1C4733',
+            paddingLeft: 20,
+          }}>
+            <Button onClick={onLoginClick} color="success">Login</Button>{' '}
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
