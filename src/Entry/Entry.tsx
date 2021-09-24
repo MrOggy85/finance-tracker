@@ -63,6 +63,11 @@ const Entry = ({ visible, onChosenAccount }: Props) => {
     init();
   }, []);
 
+  const onRefreshClick = async () => {
+    const c = await getAllCategories();
+    setCategories(c);
+  };
+
   const onAddClick = async () => {
     if (!choosenAccount) {
       alert('No Chosen Account!');
@@ -157,22 +162,26 @@ const Entry = ({ visible, onChosenAccount }: Props) => {
         <InputGroupAddon addonType="prepend">
           <InputGroupText>Category</InputGroupText>
         </InputGroupAddon>
-        <InputGroupButtonDropdown addonType="append" isOpen={categoryDropdownOpen} toggle={toggleCategoryDropDown}>
-          <DropdownToggle caret color="primary">
-            {choosenCategory?.name || 'Choose Category'}
-          </DropdownToggle>
-          <DropdownMenu>
-            {categories.map(x => (
-              <DropdownItem key={x.id} onClick={() => {
-                const cat = categories.find(c => c.id === x.id);
-                if (!cat) {
-                  throw new Error(`No Category fouund... ${x.id}`);
-                }
-                setChoosenCategory(cat);
-              }}>{x.name}</DropdownItem>
-            ))}
-          </DropdownMenu>
-        </InputGroupButtonDropdown>
+        <div>
+          <InputGroupButtonDropdown addonType="append" isOpen={categoryDropdownOpen} toggle={toggleCategoryDropDown}>
+            <DropdownToggle caret color="primary">
+              {choosenCategory?.name || 'Choose Category'}
+            </DropdownToggle>
+            <DropdownMenu>
+              {categories.map(x => (
+                <DropdownItem key={x.id} onClick={() => {
+                  const cat = categories.find(c => c.id === x.id);
+                  if (!cat) {
+                    throw new Error(`No Category fouund... ${x.id}`);
+                  }
+                  setChoosenCategory(cat);
+                }}>{x.name}</DropdownItem>
+              ))}
+            </DropdownMenu>
+          </InputGroupButtonDropdown>
+        </div>
+
+        <InputGroupAddon addonType="append"><Button color="success" onClick={onRefreshClick}>Refresh</Button></InputGroupAddon>
       </InputGroup>
       <InputGroup>
         <Button color="primary" onClick={onAddClick}>Add</Button>

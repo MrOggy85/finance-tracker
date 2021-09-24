@@ -44,6 +44,14 @@ export function addEntry(entry: EntryAdd, accountId: number, categoryId: number)
   });
 }
 
+export function removeEntry(entryId: Entry['id']) {
+  return send({
+    entity: 'account',
+    operation: 'remove-entry',
+    arg: entryId,
+  });
+}
+
 export function remove(id: number) {
   return send({
     entity: 'account',

@@ -1,7 +1,7 @@
 import * as accountRepo from "./account/accountRepo";
 import * as categoryRepo from "./category/categoryRepo";
 import { add as addBalance } from "./balance/balanceRepo";
-import { add as addEntry } from "./entry/entryRepo";
+import { add as addEntry, remove as removeEntry } from "./entry/entryRepo";
 
 type AccountGetAll = {
   entity: 'account';
@@ -31,6 +31,12 @@ type AccountAddEntry = {
   entity: 'account';
   operation: 'add-entry';
   arg: Parameters<typeof addEntry>;
+};
+
+type AccountRemoveEntry = {
+  entity: 'account';
+  operation: 'remove-entry';
+  arg: Parameters<typeof removeEntry>[0];
 };
 
 type AccountRemove = {
@@ -63,7 +69,7 @@ type CategoryRemove = {
   arg: Parameters<typeof categoryRepo['remove']>[0];
 };
 
-export type Param = AccountGetAll | AccountGet | AccountAdd | AccountAddBalance | AccountAddEntry | AccountRemove | CategoryGetAll | CategoryAdd | CategoryRemove | CategoryUpdate;
+export type Param = AccountGetAll | AccountGet | AccountAdd | AccountAddBalance | AccountAddEntry | AccountRemoveEntry | AccountRemove | CategoryGetAll | CategoryAdd | CategoryRemove | CategoryUpdate;
 
 async function repo({ entity, operation, arg }: Param) {
   switch (entity) {
@@ -97,6 +103,10 @@ async function accountHandler({ operation, arg }: Omit<Param, 'entity'>) {
 
     case 'add-entry':
       await addEntry(...arg as AccountAddEntry['arg']);
+      return;
+
+    case 'remove-entry':
+      await removeEntry(arg as AccountRemoveEntry['arg']);
       return;
 
     case 'remove':

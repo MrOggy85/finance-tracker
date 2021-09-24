@@ -1,8 +1,11 @@
 import type { WebviewTag } from "electron";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button, Col, Container, Row } from "reactstrap";
+import type Account from "../../electron/db/account/Account";
 import BrowserTab from "../components/BrowserTab";
+import { getAll } from "../core/db/account";
 import Entry from "../Entry";
+import EntryList from "../EntryList";
 
 const PRESTIA_URL = 'https://login.smbctb.co.jp/ib/portal/POSNIN1prestiatop.prst?LOCALE=en_JP';
 
@@ -12,6 +15,8 @@ type Props = {
 
 const Prestia = ({ visible }: Props) => {
   const webViewRef = useRef<WebviewTag>(null);
+
+  const [prestiaAccount, setPrestiaAccount] = useState<Account | null>(null);
 
   const onLoginClick = async () => {
     const username = process.env.REACT_APP_PRESTIA_USERNAME;
@@ -67,11 +72,28 @@ const Prestia = ({ visible }: Props) => {
     });
   };
 
+  useEffect(() => {
+    const init = async () => {
+      const a = await getAll();
+      const pAccount = a.find(x => x.name.toLowerCase().indexOf('prestia') !== -1);
+      if (!pAccount) {
+        alert('No Prestia account found...');
+        return;
+      }
+      setPrestiaAccount(pAccount);
+    };
+    init();
+  }, []);
+
   return (
     <Container style={{ display: visible ? 'block' : 'none' }}>
       <Row>
         <Col xs={4}>
-          <Entry visible />
+
+          <Row><Entry visible /></Row>
+          {prestiaAccount && (
+            <Row><EntryList choosenAccount={prestiaAccount} /></Row>
+          )}
         </Col>
         <Col>
           <BrowserTab
