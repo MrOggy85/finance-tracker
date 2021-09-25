@@ -1,19 +1,19 @@
-import styles from './App.module.css';
-import Home from './Home';
-import Dashboard from './Dashboard';
-import Future from './Future';
-import DailyCheckIn from './DailyCheckIn';
 import {
   Switch,
   Route,
   Link,
   useLocation
 } from 'react-router-dom';
-import Prestia from './Prestia';
 import Nav from 'react-bootstrap/Nav';
 import NavItem from 'react-bootstrap/NavItem';
-import Category from './Category';
-import QuickEntry from './QuickEntry';
+import styles from './App.module.css';
+import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
+import Future from './pages/Future';
+import DailyCheckIn from './pages/DailyCheckIn';
+import Prestia from './pages/Prestia';
+import Category from './pages/Category';
+import QuickEntry from './pages/QuickEntry';
 
 type LinkItemProps = {
   url: string;

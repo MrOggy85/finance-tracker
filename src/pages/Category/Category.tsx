@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Button, ButtonGroup, Container, DropdownItem, DropdownMenu, DropdownToggle, Input, InputGroup, InputGroupAddon, InputGroupButtonDropdown, InputGroupText } from 'reactstrap';
-import { getAll as getAllCategories, add, remove, update } from '../core/db/category';
-import type CategoryEntity from '../../electron/db/category/Category';
+import { getAll as getAllCategories, add, remove, update } from '../../core/db/category';
+import type CategoryEntity from '../../../electron/db/category/Category';
 
 type Props = {
   visible: boolean;

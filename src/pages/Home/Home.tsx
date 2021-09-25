@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Button, FormGroup, Input, Label, Table } from 'reactstrap';
 import Alert from 'react-bootstrap/Alert';
-import { getAll, add, addBalance, remove } from '../core/db/account';
-import displayInYen from '../core/displayInYen';
-import type { Awaited } from '../types';
+import { getAll, add, addBalance, remove } from '../../core/db/account';
+import displayInYen from '../../core/displayInYen';
+import type { Awaited } from '../../types';
 
 type Account = Awaited<ReturnType<typeof getAll>>[0];
 

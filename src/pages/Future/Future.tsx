@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Container, Input, InputGroup, InputGroupAddon, InputGroupText } from "reactstrap";
 import Alert from 'react-bootstrap/Alert';
-import displayInYen from "../core/displayInYen";
+import displayInYen from "../../core/displayInYen";
 
 type InputFieldProps = {
   label: string;

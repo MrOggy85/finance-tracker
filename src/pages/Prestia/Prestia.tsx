@@ -1,11 +1,11 @@
 import type { WebviewTag } from "electron";
 import { useEffect, useRef, useState } from "react";
 import { Button, Col, Container, Row } from "reactstrap";
-import type Account from "../../electron/db/account/Account";
-import BrowserTab from "../components/BrowserTab";
-import { getAll } from "../core/db/account";
-import Entry from "../Entry";
-import EntryList from "../EntryList";
+import type Account from "../../../electron/db/account/Account";
+import { getAll } from "../../core/db/account";
+import BrowserTab from "../../components/BrowserTab";
+import Entry from "../../components/Entry";
+import EntryList from "../../components/EntryList";
 
 const PRESTIA_URL = 'https://login.smbctb.co.jp/ib/portal/POSNIN1prestiatop.prst?LOCALE=en_JP';
 
@@ -90,7 +90,9 @@ const Prestia = ({ visible }: Props) => {
       <Row>
         <Col xs={4}>
 
-          <Row><Entry visible /></Row>
+          <Row>
+            <Entry visible suggestedAccount={prestiaAccount || undefined} />
+          </Row>
           {prestiaAccount && (
             <Row><EntryList choosenAccount={prestiaAccount} /></Row>
           )}

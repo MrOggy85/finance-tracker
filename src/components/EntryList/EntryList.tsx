@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { FiTrash2 } from "react-icons/fi";
 import format from 'date-fns/format';
-import type Account from '../../electron/db/account/Account';
-import { get as getAccount, removeEntry } from '../core/db/account';
-import displayInYen from '../core/displayInYen';
+import type Account from '../../../electron/db/account/Account';
+import { get as getAccount, removeEntry } from '../../core/db/account';
+import displayInYen from '../../core/displayInYen';
 
 
 type Props = {

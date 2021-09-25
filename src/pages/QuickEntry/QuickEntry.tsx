@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { Container, Col, Row } from 'reactstrap';
-import type Account from '../../electron/db/account/Account';
-import Entry from '../Entry';
-import EntryList from '../EntryList';
-
+import type Account from '../../../electron/db/account/Account';
+import Entry from '../../components/Entry';
+import EntryList from '../../components/EntryList';
 
 type Props = {
   visible: boolean;

@@ -1,11 +1,10 @@
 import { ComponentProps, useEffect, useState } from 'react';
 import { Button, Container, DropdownItem, DropdownMenu, DropdownToggle, Input, InputGroup, InputGroupAddon, InputGroupButtonDropdown, InputGroupText } from 'reactstrap';
 import format from 'date-fns/format';
-import type Account from '../../electron/db/account/Account';
-import type Category from '../../electron/db/category/Category';
-import { getAll as getAllAccount, addEntry } from '../core/db/account';
-import { getAll as getAllCategories } from '../core/db/category';
-
+import type Account from '../../../electron/db/account/Account';
+import type Category from '../../../electron/db/category/Category';
+import { getAll as getAllAccount, addEntry } from '../../core/db/account';
+import { getAll as getAllCategories } from '../../core/db/category';
 
 type InputFieldProps = {
   label: string;
@@ -35,10 +34,11 @@ const InputField = ({ label, value, onChange, displayAfter, disabled, step, type
 
 type Props = {
   visible: boolean;
+  suggestedAccount?: Account;
   onChosenAccount?: (account: Account | null) => void;
 };
 
-const Entry = ({ visible, onChosenAccount }: Props) => {
+const Entry = ({ visible, suggestedAccount, onChosenAccount }: Props) => {
   const [amount, setAmount] = useState<number>(0);
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [choosenAccount, setChoosenAccount] = useState<Account | null>(null);
@@ -62,6 +62,12 @@ const Entry = ({ visible, onChosenAccount }: Props) => {
     };
     init();
   }, []);
+
+  useEffect(() => {
+    if (suggestedAccount) {
+      setChoosenAccount(suggestedAccount);
+    }
+  }, [suggestedAccount]);
 
   const onRefreshClick = async () => {
     const c = await getAllCategories();
