@@ -1,6 +1,6 @@
 import Entry from './Entry';
-import * as accountRepo from '../account/accountRepo';
-import * as categoryRepo from '../category/categoryRepo';
+import * as accountRepo from '../account/repo';
+import * as categoryRepo from '../category/repo';
 import getConnection from '../getConnection';
 import type Account from '../account/Account';
 import type Category from '../category/Category';

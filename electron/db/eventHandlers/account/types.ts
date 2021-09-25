@@ -1,6 +1,6 @@
-import * as accountRepo from "../../account/accountRepo";
-import * as balanceRepo from "../../balance/balanceRepo";
-import * as entryRepo from "../../entry/entryRepo";
+import * as accountRepo from "../../account/repo";
+import * as balanceRepo from "../../balance/repo";
+import * as entryRepo from "../../entry/repo";
 
 export type GetAll = {
   entity: 'account';

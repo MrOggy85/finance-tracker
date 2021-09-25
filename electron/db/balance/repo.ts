@@ -1,5 +1,5 @@
 import Balance from './Balance';
-import { get as getAccount } from '../account/accountRepo';
+import { get as getAccount } from '../account/repo';
 import getConnection from '../getConnection';
 import Account from '../account/Account';
 

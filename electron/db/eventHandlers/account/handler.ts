@@ -1,6 +1,6 @@
-import * as accountRepo from "../../account/accountRepo";
-import { add as addBalance } from "../../balance/balanceRepo";
-import { add as addEntry, remove as removeEntry } from "../../entry/entryRepo";
+import * as accountRepo from "../../account/repo";
+import { add as addBalance } from "../../balance/repo";
+import { add as addEntry, remove as removeEntry } from "../../entry/repo";
 import type { Param } from "../types";
 import type { Add, AddBalance, AddEntry, Get, Remove, RemoveEntry } from './types';
 

@@ -1,4 +1,4 @@
-import * as categoryRepo from "../../category/categoryRepo";
+import * as categoryRepo from "../../category/repo";
 
 export type GetAll = {
   entity: 'category';

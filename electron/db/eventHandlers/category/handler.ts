@@ -1,4 +1,4 @@
-import * as categoryRepo from "../../category/categoryRepo";
+import * as categoryRepo from "../../category/repo";
 import type { Param } from "../types";
 import type { Add, Update, Remove } from './types';
 
