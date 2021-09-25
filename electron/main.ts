@@ -1,10 +1,10 @@
 import * as path from 'path';
 import { app, BrowserWindow } from 'electron';
 import * as isDev from 'electron-is-dev';
-import repo from './db/repo';
+import dbEventHandler from './db/eventHandlers/mainCallback';
 import subscribe from './subscribe';
 
-subscribe('repo', repo);
+subscribe('repo', dbEventHandler);
 
 function createWindow() {
   // Create the browser window.

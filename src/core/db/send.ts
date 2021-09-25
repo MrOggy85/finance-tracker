@@ -1,4 +1,4 @@
-import type { Param } from '../../../electron/db/repo';
+import type { Param } from '../../../electron/db/eventHandlers/types';
 import { v4 as uuidv4 } from 'uuid';
 
 const { ipcRenderer } = window.require('electron');
