@@ -10,11 +10,11 @@ async function getRepository() {
 type CategoryAdd = Omit<Category, 'id' | 'entries'>;
 
 export async function add(newCategory: CategoryAdd) {
-  const entry = new Category();
-  entry.name = newCategory.name;
+  const entity = new Category();
+  entity.name = newCategory.name;
 
   const repository = await getRepository();
-  await repository.save(entry);
+  await repository.save(entity);
 }
 
 type CategoryUpdate = Omit<Category, 'entries'>;
@@ -30,14 +30,12 @@ export async function update(changedCategory: CategoryUpdate) {
 export async function getAll() {
   const repository = await getRepository();
   const all = await repository.find();
-
   return all;
 }
 
 export async function get(id: number) {
   const repository = await getRepository();
   const entity = await repository.findOne({ id }, { relations: ["entries"] });
-
   return entity;
 }
 

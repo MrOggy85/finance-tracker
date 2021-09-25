@@ -33,3 +33,8 @@ export async function remove(id: number) {
   const repository = await getRepository();
   await repository.delete({ id });
 }
+
+export async function save(account: Account) {
+  const repository = await getRepository();
+  await repository.save(account);
+}
