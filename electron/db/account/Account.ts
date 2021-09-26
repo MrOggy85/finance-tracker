@@ -7,7 +7,9 @@ export default class Account {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    unique: true,
+  })
   name: string;
 
   @OneToMany(() => Balance, balance => balance.account)

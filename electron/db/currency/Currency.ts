@@ -5,7 +5,9 @@ export class Currency {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    unique: true,
+  })
   name: string;
 
   @OneToMany(() => CurrencyValue, currencyValue => currencyValue.currency)
