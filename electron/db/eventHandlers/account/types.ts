@@ -1,6 +1,5 @@
 import * as accountRepo from "../../account/repo";
 import * as balanceRepo from "../../balance/repo";
-import * as entryRepo from "../../entry/repo";
 
 export type GetAll = {
   entity: 'account';
@@ -26,23 +25,11 @@ export type AddBalance = {
   arg: Parameters<typeof balanceRepo.add>;
 };
 
-export type AddEntry = {
-  entity: 'account';
-  operation: 'add-entry';
-  arg: Parameters<typeof entryRepo.add>;
-};
-
-export type RemoveEntry = {
-  entity: 'account';
-  operation: 'remove-entry';
-  arg: Parameters<typeof entryRepo.remove>[0];
-};
-
 export type Remove = {
   entity: 'account';
   operation: 'remove';
   arg: Parameters<typeof accountRepo['remove']>[0];
 };
 
-type Account = GetAll | Get | Add | AddBalance | AddEntry | RemoveEntry | Remove;
+type Account = GetAll | Get | Add | AddBalance | Remove;
 export default Account;

@@ -1,8 +1,6 @@
 import type Account from '../../../electron/db/account/Account';
 import send from './send';
 
-type Entry = Account['entries'][0];
-
 export function getAll() {
   return send<Account[]>({
     entity: 'account',
@@ -31,24 +29,6 @@ export function addBalance(amount: number, accountId: number, date: Date) {
     entity: 'account',
     operation: 'add-balance',
     arg: [amount, accountId, date],
-  });
-}
-
-type EntryAdd = Omit<Entry, 'id' | 'account' | 'category'>;
-
-export function addEntry(entry: EntryAdd, accountId: number, categoryId: number) {
-  return send({
-    entity: 'account',
-    operation: 'add-entry',
-    arg: [entry, accountId, categoryId],
-  });
-}
-
-export function removeEntry(entryId: Entry['id']) {
-  return send({
-    entity: 'account',
-    operation: 'remove-entry',
-    arg: entryId,
   });
 }
 

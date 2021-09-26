@@ -3,9 +3,9 @@ import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { FiTrash2 } from "react-icons/fi";
 import format from 'date-fns/format';
 import type Account from '../../../electron/db/account/Account';
-import { get as getAccount, removeEntry } from '../../core/db/account';
+import { get as getAccount } from '../../core/db/account';
+import { remove as removeEntry } from '../../core/db/entry';
 import displayInYen from '../../core/displayInYen';
-
 
 type Props = {
   choosenAccount: Account | null;

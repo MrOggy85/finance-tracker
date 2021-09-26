@@ -18,7 +18,8 @@ export default class Entry {
 
   @ManyToOne(() => Account, account => account.entries, {
     cascade: true,
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE',
+    nullable: false,
   })
   account: Account;
 
@@ -26,6 +27,13 @@ export default class Entry {
     cascade: true,
     onDelete: 'CASCADE',
     eager: true,
+    nullable: false,
   })
   category: Category;
+
+  @Column({ nullable: false })
+  categoryId: number;
+
+  @Column({ nullable: false })
+  accountId: number;
 }

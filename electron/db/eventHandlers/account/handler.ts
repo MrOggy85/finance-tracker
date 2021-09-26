@@ -1,8 +1,7 @@
 import * as accountRepo from "../../account/repo";
 import { add as addBalance } from "../../balance/repo";
-import { add as addEntry, remove as removeEntry } from "../../entry/repo";
 import type { Param } from "../types";
-import type { Add, AddBalance, AddEntry, Get, Remove, RemoveEntry } from './types';
+import type { Add, AddBalance, Get, Remove } from './types';
 
 async function accountHandler({ operation, arg }: Omit<Param, 'entity'>) {
   switch (operation) {
@@ -20,14 +19,6 @@ async function accountHandler({ operation, arg }: Omit<Param, 'entity'>) {
 
     case 'add-balance':
       await addBalance(...arg as AddBalance['arg']);
-      return;
-
-    case 'add-entry':
-      await addEntry(...arg as AddEntry['arg']);
-      return;
-
-    case 'remove-entry':
-      await removeEntry(arg as RemoveEntry['arg']);
       return;
 
     case 'remove':
