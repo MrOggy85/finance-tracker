@@ -114,7 +114,7 @@ const Category = ({ visible }: Props) => {
       {choosenCategory?.id ? (
         <ButtonGroup vertical>
           <Button color="primary" onClick={onChangeClick}>Change</Button>
-          <Button color="danger" onCLick={onDeleteClick}>Delete</Button>
+          <Button color="danger" onClick={onDeleteClick}>Delete</Button>
         </ButtonGroup>
       ) : (
         <Button onClick={onNewClick} color="primary">Add New Category</Button>
