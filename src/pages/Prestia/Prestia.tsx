@@ -7,7 +7,7 @@ import BrowserTab from "../../components/BrowserTab";
 import Entry from "../../components/Entry";
 import EntryList from "../../components/EntryList";
 
-const PRESTIA_URL = 'https://login.smbctb.co.jp/ib/portal/POSNIN1prestiatop.prst?LOCALE=en_JP';
+const URL = 'https://login.smbctb.co.jp/ib/portal/POSNIN1prestiatop.prst?LOCALE=en_JP';
 
 type Props = {
   visible: boolean;
@@ -99,7 +99,7 @@ const Prestia = ({ visible }: Props) => {
         </Col>
         <Col>
           <BrowserTab
-            src={PRESTIA_URL}
+            src={URL}
             bottomMargin={88}
             webViewRef={webViewRef}
           />

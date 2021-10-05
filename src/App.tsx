@@ -12,6 +12,7 @@ import Dashboard from './pages/Dashboard';
 import Future from './pages/Future';
 import DailyCheckIn from './pages/DailyCheckIn';
 import Prestia from './pages/Prestia';
+import RakutenBank from './pages/RakutenBank';
 import Category from './pages/Category';
 import QuickEntry from './pages/QuickEntry';
 
@@ -52,6 +53,9 @@ function App() {
         <NavItem>
           <LinkItem url="/prestia" text="Prestia" />
         </NavItem>
+        <NavItem>
+          <LinkItem url="/rakuten-bank" text="楽天銀行" />
+        </NavItem>
       </Nav>
       <Switch>
         <Route exact path="/">
@@ -64,6 +68,7 @@ function App() {
       <Future visible={location.pathname === '/future'} />
       <DailyCheckIn visible={location.pathname === '/daily-check-in'} />
       <Prestia visible={location.pathname === '/prestia'} />
+      <RakutenBank visible={location.pathname === '/rakuten-bank'} />
       <QuickEntry visible={location.pathname === '/entry'} />
       <Category visible={location.pathname === '/category'} />
     </>
