@@ -1,4 +1,4 @@
-import { ComponentProps, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Container, DropdownItem, DropdownMenu, DropdownToggle, Input, InputGroup, InputGroupAddon, InputGroupButtonDropdown, InputGroupText } from 'reactstrap';
 import format from 'date-fns/format';
 import type Account from '../../../electron/db/account/Account';
@@ -7,32 +7,7 @@ import type { TransferCategoryName } from '../../../electron/db/category/repo';
 import { getAll as getAllAccount } from '../../core/db/account';
 import { add as addEntry, addTransfer } from '../../core/db/entry';
 import { getAll as getAllCategories } from '../../core/db/category';
-
-type InputFieldProps = {
-  label: string;
-  value: number;
-  onChange: (newValue: number) => void;
-  displayAfter?: string;
-  disabled?: boolean;
-  step?: number;
-  type?: ComponentProps<typeof Input>['type'];
-};
-
-const InputField = ({ label, value, onChange, displayAfter, disabled, step, type }: InputFieldProps) => (
-  <InputGroup>
-    <InputGroupAddon addonType="prepend">
-      <InputGroupText>{label}</InputGroupText>
-    </InputGroupAddon>
-    <Input
-      step={step}
-      disabled={disabled}
-      type={type || 'number'}
-      value={value === 0 ? '' : value}
-      onChange={({ target: { value } }) => { onChange(Number(value)); }}
-    />
-    <InputGroupAddon addonType="append">{displayAfter}</InputGroupAddon>
-  </InputGroup>
-);
+import InputField from './InputField';
 
 const transferCategoryName: TransferCategoryName = 'Transfer';
 
@@ -40,9 +15,10 @@ type Props = {
   visible: boolean;
   suggestedAccount?: Account;
   onChosenAccount?: (account: Account | null) => void;
+  onSubmit?: (account: Account) => void;
 };
 
-const Entry = ({ visible, suggestedAccount, onChosenAccount }: Props) => {
+const Entry = ({ visible, suggestedAccount, onChosenAccount, onSubmit }: Props) => {
   const [amount, setAmount] = useState<number>(0);
 
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -129,6 +105,9 @@ const Entry = ({ visible, suggestedAccount, onChosenAccount }: Props) => {
     // if (onChosenAccount) {
     //   onChosenAccount(null);
     // }
+    if (onSubmit) {
+      onSubmit(choosenAccount);
+    }
   };
 
   return !visible ? null : (
@@ -141,8 +120,8 @@ const Entry = ({ visible, suggestedAccount, onChosenAccount }: Props) => {
         displayAfter="JPY"
       />
 
-      <InputGroup>
-        <InputGroupAddon addonType="prepend">
+      <InputGroup style={{ marginBottom: 5 }}>
+        <InputGroupAddon addonType="prepend" style={{ marginRight: 5 }}>
           <InputGroupText>{choosenCategory?.name === transferCategoryName ? 'Source ' : ''} Account</InputGroupText>
         </InputGroupAddon>
         <InputGroupButtonDropdown addonType="append" isOpen={accountDropdownOpen} toggle={toggleAccountDropDown}>
@@ -168,7 +147,7 @@ const Entry = ({ visible, suggestedAccount, onChosenAccount }: Props) => {
       </InputGroup>
 
       {choosenCategory?.name === transferCategoryName && (
-        <InputGroup>
+        <InputGroup style={{ marginBottom: 5 }}>
           <InputGroupAddon addonType="prepend">
             <InputGroupText>Destination Account</InputGroupText>
           </InputGroupAddon>
@@ -194,7 +173,7 @@ const Entry = ({ visible, suggestedAccount, onChosenAccount }: Props) => {
         </InputGroup>
       )}
 
-      <InputGroup>
+      <InputGroup style={{ marginBottom: 5 }}>
         <InputGroupAddon addonType="prepend">
           <InputGroupText>Date</InputGroupText>
         </InputGroupAddon>
@@ -205,7 +184,7 @@ const Entry = ({ visible, suggestedAccount, onChosenAccount }: Props) => {
         />
       </InputGroup>
 
-      <InputGroup>
+      <InputGroup style={{ marginBottom: 5 }}>
         <InputGroupAddon addonType="prepend">
           <InputGroupText>Description</InputGroupText>
         </InputGroupAddon>
@@ -214,15 +193,15 @@ const Entry = ({ visible, suggestedAccount, onChosenAccount }: Props) => {
           value={description}
           onChange={({ target: { value } }) => { setDescription(value); }}
         />
-        <InputGroupAddon addonType="append">{`${description.length} characters`}</InputGroupAddon>
+        <InputGroupAddon addonType="append">{`${description.length} chars`}</InputGroupAddon>
       </InputGroup>
 
-      <InputGroup>
-        <InputGroupAddon addonType="prepend">
+      <InputGroup style={{ marginBottom: 5 }}>
+        <InputGroupAddon addonType="prepend" style={{ marginRight: 5 }}>
           <InputGroupText>Category</InputGroupText>
         </InputGroupAddon>
         <div>
-          <InputGroupButtonDropdown addonType="append" isOpen={categoryDropdownOpen} toggle={toggleCategoryDropDown}>
+          <InputGroupButtonDropdown addonType="append" isOpen={categoryDropdownOpen} toggle={toggleCategoryDropDown} style={{ marginRight: 5 }}>
             <DropdownToggle caret color="primary">
               {choosenCategory?.name || 'Choose Category'}
             </DropdownToggle>
