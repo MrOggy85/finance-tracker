@@ -1,27 +1,26 @@
 import { useEffect, useState } from 'react';
 import { Button, Container, DropdownItem, DropdownMenu, DropdownToggle, Input, InputGroup, InputGroupAddon, InputGroupButtonDropdown, InputGroupText } from 'reactstrap';
 import format from 'date-fns/format';
-import type Account from '../../../electron/db/account/Account';
-import type Category from '../../../electron/db/category/Category';
 import type { TransferCategoryName } from '../../../electron/db/category/repo';
-import { getAll as getAllAccount } from '../../core/db/account';
-import { add as addEntry, addTransfer } from '../../core/db/entry';
 import { getAll as getAllCategories } from '../../core/db/category';
 import InputField from './InputField';
+import { Account, addEntry, addTransfer, Category } from '../../core/redux/accountSlice';
+import useDispatch from '../../core/redux/useDispatch';
 
 const transferCategoryName: TransferCategoryName = 'Transfer';
 
 type Props = {
   visible: boolean;
+  accounts: Account[];
   suggestedAccount?: Account;
   onChosenAccount?: (account: Account | null) => void;
   onSubmit?: (account: Account) => void;
 };
 
-const Entry = ({ visible, suggestedAccount, onChosenAccount, onSubmit }: Props) => {
+const Entry = ({ visible, accounts, suggestedAccount, onChosenAccount, onSubmit }: Props) => {
+  const dispatch = useDispatch();
   const [amount, setAmount] = useState<number>(0);
 
-  const [accounts, setAccounts] = useState<Account[]>([]);
   const [choosenAccount, setChoosenAccount] = useState<Account | null>(null);
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
   const [choosenDestinationAccount, setChoosenDestinationAccount] = useState<Account | null>(null);
@@ -36,17 +35,6 @@ const Entry = ({ visible, suggestedAccount, onChosenAccount, onSubmit }: Props) 
   const toggleAccountDropDown = () => setAccountDropdownOpen(!accountDropdownOpen);
   const toggleDestinationAccountDropDown = () => setDestinationAccountDropdownOpen(!destinationAccountDropdownOpen);
   const toggleCategoryDropDown = () => setCategoryDropdownOpen(!categoryDropdownOpen);
-
-  useEffect(() => {
-    const init = async () => {
-      const a = await getAllAccount();
-      setAccounts(a);
-
-      const c = await getAllCategories();
-      setCategories(c);
-    };
-    init();
-  }, []);
 
   useEffect(() => {
     if (suggestedAccount) {
@@ -75,22 +63,22 @@ const Entry = ({ visible, suggestedAccount, onChosenAccount, onSubmit }: Props) 
 
     try {
       if (choosenCategory.name === transferCategoryName) {
-        await addTransfer({
+        await dispatch(addTransfer({
           amount,
           date,
           description,
-        }, choosenAccount.id, choosenDestinationAccount?.id || -1);
+          sourceAccountId: choosenAccount.id,
+          destinationAccountId: choosenDestinationAccount?.id || -1
+        }));
       } else {
-        await addEntry({
+        await dispatch(addEntry({
           amount,
           date,
           description,
           accountId: choosenAccount.id,
           categoryId: choosenCategory.id
-        });
+        }));
       }
-
-
     } catch (err) {
       console.error(err);
       alert(`DB error: ${err}`);
@@ -100,11 +88,7 @@ const Entry = ({ visible, suggestedAccount, onChosenAccount, onSubmit }: Props) 
     setDate(new Date());
     setDescription('');
     setChoosenCategory(null);
-    // setChoosenAccount(null);
     setChoosenDestinationAccount(null);
-    // if (onChosenAccount) {
-    //   onChosenAccount(null);
-    // }
     if (onSubmit) {
       onSubmit(choosenAccount);
     }

@@ -11,10 +11,16 @@ import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import Future from './pages/Future';
 import DailyCheckIn from './pages/DailyCheckIn';
-import Prestia from './pages/Prestia';
-import RakutenBank from './pages/RakutenBank';
 import Category from './pages/Category';
 import QuickEntry from './pages/QuickEntry';
+import WithRedux from './core/redux/WithRedux';
+import BankTab from './components/BankTab';
+import { ComponentProps } from 'react';
+import autoLoginPrestia from './core/autoLoginPrestia';
+import autoLoginRakutenBank from './core/autoLoginRakutenBank';
+
+const QuickEntryWithRedux = WithRedux(QuickEntry);
+const BankTabWithRedux = WithRedux<ComponentProps<typeof BankTab>>(BankTab);
 
 type LinkItemProps = {
   url: string;
@@ -67,9 +73,23 @@ function App() {
       </Switch>
       <Future visible={location.pathname === '/future'} />
       <DailyCheckIn visible={location.pathname === '/daily-check-in'} />
-      <Prestia visible={location.pathname === '/prestia'} />
-      <RakutenBank visible={location.pathname === '/rakuten-bank'} />
-      <QuickEntry visible={location.pathname === '/entry'} />
+      <BankTabWithRedux
+        visible={location.pathname === '/prestia'}
+        url="https://login.smbctb.co.jp/ib/portal/POSNIN1prestiatop.prst?LOCALE=en_JP"
+        accountName="Prestia"
+        bottomBarBackgroundColor="#1C4733"
+        bottomBarButtonColor="success"
+        autoLogin={autoLoginPrestia}
+      />
+      <BankTabWithRedux
+        visible={location.pathname === '/rakuten-bank'}
+        url="https://fes.rakuten-bank.co.jp/MS/main/RbS?CurrentPageID=START&&COMMAND=LOGIN"
+        accountName="Rakuten"
+        bottomBarBackgroundColor="#CA2C27"
+        bottomBarButtonColor="danger"
+        autoLogin={autoLoginRakutenBank}
+      />
+      <QuickEntryWithRedux visible={location.pathname === '/entry'} />
       <Category visible={location.pathname === '/category'} />
     </>
   );
