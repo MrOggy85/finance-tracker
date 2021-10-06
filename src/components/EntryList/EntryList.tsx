@@ -1,7 +1,7 @@
 import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { FiTrash2 } from "react-icons/fi";
 import format from 'date-fns/format';
-import type { Entry } from '../../core/redux/accountSlice';
+import type { Entry } from '../../core/redux/types';
 import displayInYen from '../../core/displayInYen';
 
 type Props = {

@@ -2,22 +2,23 @@ import { useEffect, useState } from 'react';
 import { Button, Container, DropdownItem, DropdownMenu, DropdownToggle, Input, InputGroup, InputGroupAddon, InputGroupButtonDropdown, InputGroupText } from 'reactstrap';
 import format from 'date-fns/format';
 import type { TransferCategoryName } from '../../../electron/db/category/repo';
-import { getAll as getAllCategories } from '../../core/db/category';
 import InputField from './InputField';
-import { Account, addEntry, addTransfer, Category } from '../../core/redux/accountSlice';
+import { addEntry, addTransfer } from '../../core/redux/accountSlice';
 import useDispatch from '../../core/redux/useDispatch';
+import type { Account, Category } from '../../core/redux/types';
 
 const transferCategoryName: TransferCategoryName = 'Transfer';
 
 type Props = {
   visible: boolean;
   accounts: Account[];
+  categories: Category[];
   suggestedAccount?: Account;
   onChosenAccount?: (account: Account | null) => void;
   onSubmit?: (account: Account) => void;
 };
 
-const Entry = ({ visible, accounts, suggestedAccount, onChosenAccount, onSubmit }: Props) => {
+const Entry = ({ visible, accounts, categories, suggestedAccount, onChosenAccount, onSubmit }: Props) => {
   const dispatch = useDispatch();
   const [amount, setAmount] = useState<number>(0);
 
@@ -29,7 +30,6 @@ const Entry = ({ visible, accounts, suggestedAccount, onChosenAccount, onSubmit 
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [date, setDate] = useState(new Date());
   const [description, setDescription] = useState('');
-  const [categories, setCategories] = useState<Category[]>([]);
   const [choosenCategory, setChoosenCategory] = useState<Category | null>(null);
 
   const toggleAccountDropDown = () => setAccountDropdownOpen(!accountDropdownOpen);
@@ -41,11 +41,6 @@ const Entry = ({ visible, accounts, suggestedAccount, onChosenAccount, onSubmit 
       setChoosenAccount(suggestedAccount);
     }
   }, [suggestedAccount]);
-
-  const onRefreshClick = async () => {
-    const c = await getAllCategories();
-    setCategories(c);
-  };
 
   const onAddClick = async () => {
     if (!choosenAccount) {
@@ -202,8 +197,6 @@ const Entry = ({ visible, accounts, suggestedAccount, onChosenAccount, onSubmit 
             </DropdownMenu>
           </InputGroupButtonDropdown>
         </div>
-
-        <InputGroupAddon addonType="append"><Button color="success" onClick={onRefreshClick}>Refresh</Button></InputGroupAddon>
       </InputGroup>
       <InputGroup>
         <Button color="primary" onClick={onAddClick}>Add</Button>

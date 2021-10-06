@@ -21,6 +21,7 @@ const BankTab = ({ visible, url, accountName, bottomBarBackgroundColor, bottomBa
   const dispatch = useDispatch();
   const webViewRef = useRef<WebviewTag>(null);
 
+  const categories = useSelector(x => x.category.categories);
   const accounts = useSelector(x => x.accounts.accounts);
   const account = accounts.find(x => x.name.toLowerCase().indexOf(accountName.toLowerCase()) !== -1);
 
@@ -41,7 +42,7 @@ const BankTab = ({ visible, url, accountName, bottomBarBackgroundColor, bottomBa
       <Row>
         <Col xs={4}>
           <Row>
-            <Entry visible accounts={accounts} suggestedAccount={account} />
+            <Entry visible accounts={accounts} categories={categories} suggestedAccount={account} />
           </Row>
           {account && (
             <Row><EntryList entries={account.entries} accountName={accountName} onRemoveEntry={onRemoveEntry} /></Row>

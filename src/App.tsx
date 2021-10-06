@@ -21,6 +21,7 @@ import autoLoginRakutenBank from './core/autoLoginRakutenBank';
 
 const QuickEntryWithRedux = WithRedux(QuickEntry);
 const BankTabWithRedux = WithRedux<ComponentProps<typeof BankTab>>(BankTab);
+const CategoryWithRedux = WithRedux<ComponentProps<typeof Category>>(Category);
 
 type LinkItemProps = {
   url: string;
@@ -90,7 +91,7 @@ function App() {
         autoLogin={autoLoginRakutenBank}
       />
       <QuickEntryWithRedux visible={location.pathname === '/entry'} />
-      <Category visible={location.pathname === '/category'} />
+      <CategoryWithRedux visible={location.pathname === '/category'} />
     </>
   );
 }

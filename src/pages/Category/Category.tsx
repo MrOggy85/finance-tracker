@@ -1,34 +1,31 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Button, ButtonGroup, Container, DropdownItem, DropdownMenu, DropdownToggle, Input, InputGroup, InputGroupAddon, InputGroupButtonDropdown, InputGroupText } from 'reactstrap';
-import { getAll as getAllCategories, add, remove, update } from '../../core/db/category';
-import type CategoryEntity from '../../../electron/db/category/Category';
+import useDispatch from '../../core/redux/useDispatch';
+import type { Category } from '../../core/redux/types';
+import { getAll, add, update, remove } from '../../core/redux/categorySlice';
 
 type Props = {
   visible: boolean;
 };
 
-const Category = ({ visible }: Props) => {
+const CategoryAdmin = ({ visible }: Props) => {
+  const dispatch = useDispatch();
+  const categories = useSelector(x => x.category.categories);
+
   const [name, setName] = useState('');
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
-  const [categories, setCategories] = useState<CategoryEntity[]>([]);
-  const [choosenCategory, setChoosenCategory] = useState<CategoryEntity | null>(null);
+  const [choosenCategory, setChoosenCategory] = useState<Category | null>(null);
 
   const toggleCategoryDropDown = () => setCategoryDropdownOpen(!categoryDropdownOpen);
 
   useEffect(() => {
-    const init = async () => {
-      const c = await getAllCategories();
-      setCategories(c);
-    };
-    init();
+    dispatch(getAll());
   }, []);
 
   const onNewClick = async () => {
-    await add(name);
+    await dispatch(add(name));
     setName('');
-
-    const c = await getAllCategories();
-    setCategories(c);
   };
 
   const onChangeClick = async () => {
@@ -36,12 +33,9 @@ const Category = ({ visible }: Props) => {
       throw new Error('No Chosen Category!');
     }
 
-    await update(choosenCategory.id, name);
+    await dispatch(update([choosenCategory.id, name]));
     setName('');
     setChoosenCategory(null);
-
-    const c = await getAllCategories();
-    setCategories(c);
   };
 
   const onDeleteClick = async () => {
@@ -49,12 +43,9 @@ const Category = ({ visible }: Props) => {
       throw new Error('No Chosen Category!');
     }
 
-    await remove(choosenCategory.id);
+    await dispatch(remove(choosenCategory.id));
     setName('');
     setChoosenCategory(null);
-
-    const c = await getAllCategories();
-    setCategories(c);
   };
 
   return !visible ? null : (
@@ -125,4 +116,4 @@ const Category = ({ visible }: Props) => {
   );
 };
 
-export default Category;
+export default CategoryAdmin;

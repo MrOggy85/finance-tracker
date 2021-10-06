@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux';
 import { Container, Col, Row } from 'reactstrap';
 import Entry from '../../components/Entry';
 import EntryList from '../../components/EntryList';
-import { removeEntry, getAll, Account } from '../../core/redux/accountSlice';
+import { removeEntry, getAll } from '../../core/redux/accountSlice';
+import type { Account } from '../../core/redux/types';
 import useDispatch from '../../core/redux/useDispatch';
 
 type Props = {
@@ -13,8 +14,8 @@ type Props = {
 const QuickEntry = ({ visible }: Props) => {
   const dispatch = useDispatch();
   const accounts = useSelector(x => x.accounts.accounts);
+  const categories = useSelector(x => x.category.categories);
   const [choosenAccount, setChoosenAccount] = useState<Account | null>(null);
-  console.log('choosenAccount', choosenAccount);
 
   const entries = accounts.find(x => x.id === choosenAccount?.id)?.entries || [];
 
@@ -33,7 +34,7 @@ const QuickEntry = ({ visible }: Props) => {
     <Container style={{ display: visible ? 'block' : 'none' }}>
       <Row>
         <Col>
-          <Entry visible accounts={accounts} onChosenAccount={(account) => {
+          <Entry visible accounts={accounts} categories={categories} onChosenAccount={(account) => {
             setChoosenAccount(account);
           }} />
         </Col>
