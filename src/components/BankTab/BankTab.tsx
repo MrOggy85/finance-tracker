@@ -45,7 +45,7 @@ const BankTab = ({ visible, url, accountName, bottomBarBackgroundColor, bottomBa
             <Entry visible accounts={accounts} categories={categories} suggestedAccount={account} />
           </Row>
           {account && (
-            <Row><EntryList entries={account.entries} accountName={accountName} onRemoveEntry={onRemoveEntry} /></Row>
+            <Row><EntryList entries={account.entries} accountName={accountName} onRemoveEntry={onRemoveEntry} balance={account.balance || 0} /></Row>
           )}
 
         </Col>

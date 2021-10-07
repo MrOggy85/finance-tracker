@@ -2,6 +2,7 @@ export type Account = {
   id: number;
   name: string;
   entries: Entry[];
+  balance: number;
 };
 
 export type Entry = {

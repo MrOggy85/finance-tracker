@@ -17,7 +17,8 @@ const QuickEntry = ({ visible }: Props) => {
   const categories = useSelector(x => x.category.categories);
   const [choosenAccount, setChoosenAccount] = useState<Account | null>(null);
 
-  const entries = accounts.find(x => x.id === choosenAccount?.id)?.entries || [];
+  const a = accounts.find(x => x.id === choosenAccount?.id);
+  const entries = a?.entries || [];
 
   const onRemoveEntry = (entryId: number) => {
     dispatch(removeEntry(entryId));
@@ -39,7 +40,7 @@ const QuickEntry = ({ visible }: Props) => {
           }} />
         </Col>
         <Col>
-          <EntryList accountName={choosenAccount?.name || ''} entries={entries} onRemoveEntry={onRemoveEntry} />
+          <EntryList accountName={choosenAccount?.name || ''} entries={entries} onRemoveEntry={onRemoveEntry} balance={a?.balance || 0} />
         </Col>
       </Row>
     </Container>

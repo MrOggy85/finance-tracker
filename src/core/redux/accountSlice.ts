@@ -15,21 +15,27 @@ export const getAll = createAsyncThunk<
     const accountEntities = await getAllAccounts();
 
     const accounts: Account[] = accountEntities.map(x => {
+      let balance = 0;
+      const entries = x.entries.map<Entry>(e => {
+        balance += e.amount;
+
+        return {
+          id: e.id,
+          amount: e.amount,
+          date: e.date.getTime(),
+          description: e.description,
+          category: {
+            id: e.category.id,
+            name: e.category.name,
+          },
+        };
+      });
+
       return {
         id: x.id,
         name: x.name,
-        entries: x.entries.map<Entry>(e => {
-          return {
-            id: e.id,
-            amount: e.amount,
-            date: e.date.getTime(),
-            description: e.description,
-            category: {
-              id: e.category.id,
-              name: e.category.name,
-            },
-          };
-        })
+        entries,
+        balance,
       };
     });
 
@@ -67,7 +73,7 @@ export const addTransfer = createAsyncThunk<
       amount: transferAdd.amount,
       date: transferAdd.date,
       description: transferAdd.description,
-    }, transferAdd.destinationAccountId, transferAdd.destinationAccountId);
+    }, transferAdd.sourceAccountId, transferAdd.destinationAccountId);
 
     await thunkApi.dispatch(getAll());
     return true;

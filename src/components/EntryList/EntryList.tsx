@@ -1,4 +1,4 @@
-import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap';
+import { Container, ListGroup, ListGroupItem, Button, Alert } from 'reactstrap';
 import { FiTrash2 } from "react-icons/fi";
 import format from 'date-fns/format';
 import type { Entry } from '../../core/redux/types';
@@ -7,10 +7,11 @@ import displayInYen from '../../core/displayInYen';
 type Props = {
   entries: Entry[];
   accountName: string;
+  balance: number;
   onRemoveEntry: (entryId: number) => void;
 };
 
-const EntryList = ({ entries, accountName, onRemoveEntry }: Props) => {
+const EntryList = ({ entries, accountName, balance, onRemoveEntry }: Props) => {
   const onRemoveEntryClick = (entryId: number) => {
     return () => {
       onRemoveEntry(entryId);
@@ -22,6 +23,9 @@ const EntryList = ({ entries, accountName, onRemoveEntry }: Props) => {
   return (
     <Container>
       <h2>Entries for {accountName}</h2>
+      <Alert color={balance < 0 ? 'danger' : 'primary'}>
+        Balance: {balance}
+      </Alert>
       <ListGroup>
         {entriesCopy.sort((a, b) => {
           return a.date < b.date ? 1 : -1;
