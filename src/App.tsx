@@ -63,6 +63,9 @@ function App() {
         <NavItem>
           <LinkItem url="/rakuten-bank" text="楽天銀行" />
         </NavItem>
+        <NavItem>
+          <LinkItem url="/global-pass" text="Global Pass" />
+        </NavItem>
       </Nav>
       <Switch>
         <Route exact path="/">
@@ -86,6 +89,14 @@ function App() {
         visible={location.pathname === '/rakuten-bank'}
         url="https://fes.rakuten-bank.co.jp/MS/main/RbS?CurrentPageID=START&&COMMAND=LOGIN"
         accountName="Rakuten"
+        bottomBarBackgroundColor="#CA2C27"
+        bottomBarButtonColor="danger"
+        autoLogin={autoLoginRakutenBank}
+      />
+      <BankTabWithRedux
+        visible={location.pathname === '/global-pass'}
+        url="https://www.debit.vpass.ne.jp/p/login/RW1312010001?cc=01006"
+        accountName="Prestia"
         bottomBarBackgroundColor="#CA2C27"
         bottomBarButtonColor="danger"
         autoLogin={autoLoginRakutenBank}
