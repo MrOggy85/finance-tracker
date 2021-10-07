@@ -159,7 +159,12 @@ const Entry = ({ visible, accounts, categories, suggestedAccount, onChosenAccoun
         <Input
           type="date"
           value={format(date, "yyyy-MM-dd")}
-          onChange={({ target: { value } }) => { setDate(new Date(value)); }}
+          onChange={({ target: { value } }) => {
+            if (!value) {
+              return;
+            }
+            setDate(new Date(value));
+          }}
         />
       </InputGroup>
 
