@@ -32,7 +32,7 @@ const QuickEntry = ({ visible }: Props) => {
   }, [visible]);
 
   return !visible ? null : (
-    <Container style={{ display: visible ? 'block' : 'none' }}>
+    <Container>
       <Row>
         <Col>
           <Entry visible accounts={accounts} categories={categories} onChosenAccount={(account) => {
