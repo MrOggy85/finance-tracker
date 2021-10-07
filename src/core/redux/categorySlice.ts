@@ -17,6 +17,8 @@ export const getAll = createAsyncThunk<
         id: x.id,
         name: x.name,
       };
+    }).sort((a, b) => {
+      return a.name > b.name ? 1 : -1;
     });
 
     return categories;
