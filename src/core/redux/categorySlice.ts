@@ -58,7 +58,7 @@ export const remove = createAsyncThunk<
   Category['id'],
   {}
 >(
-  `${NAMESPACE}/removeEntry`,
+  `${NAMESPACE}/remove`,
   async (id, thunkApi) => {
     await removeFromDb(id);
 
@@ -77,6 +77,10 @@ const categorySlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getAll.fulfilled, (state, action) => {
       state.categories = action.payload;
+    });
+
+    builder.addCase(remove.rejected, (state, action) => {
+      alert(`Remove failed ${action.error.message}`);
     });
   },
 });

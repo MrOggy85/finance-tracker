@@ -25,7 +25,7 @@ export default class Entry {
 
   @ManyToOne(() => Category, category => category.entries, {
     cascade: true,
-    onDelete: 'CASCADE',
+    onDelete: 'RESTRICT',
     eager: true,
     nullable: false,
   })
