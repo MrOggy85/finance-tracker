@@ -24,7 +24,7 @@ const EntryList = ({ entries, accountName, balance, onRemoveEntry }: Props) => {
     <Container>
       <h2>Entries for {accountName}</h2>
       <Alert color={balance < 0 ? 'danger' : 'primary'}>
-        Balance: {balance}
+        Balance: {displayInYen(balance)}
       </Alert>
       <ListGroup>
         {entriesCopy.sort((a, b) => {
