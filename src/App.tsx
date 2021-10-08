@@ -19,6 +19,7 @@ import { ComponentProps } from 'react';
 import autoLoginPrestia from './core/autoLoginPrestia';
 import autoLoginRakutenBank from './core/autoLoginRakutenBank';
 
+const HomeWithRedux = WithRedux(Home);
 const QuickEntryWithRedux = WithRedux(QuickEntry);
 const BankTabWithRedux = WithRedux<ComponentProps<typeof BankTab>>(BankTab);
 const CategoryWithRedux = WithRedux<ComponentProps<typeof Category>>(Category);
@@ -29,7 +30,9 @@ type LinkItemProps = {
 };
 
 const LinkItem = ({ url, text }: LinkItemProps) => {
-  return (
+  return window.location.pathname === url ? (
+    <p className={styles.active}>{text}</p>
+  ) : (
     <Link className={`${styles.link} ${window.location.pathname === url ? 'active' : ''}`} to={url}>{text}</Link>
   );
 };
@@ -69,7 +72,7 @@ function App() {
       </Nav>
       <Switch>
         <Route exact path="/">
-          <Home />
+          <HomeWithRedux />
         </Route>
         <Route path="/dashboard">
           <Dashboard />
