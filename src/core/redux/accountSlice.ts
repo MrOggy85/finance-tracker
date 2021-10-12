@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getAll as getAllAccounts } from '../db/account';
-import { remove as removeEntryFromDb, add as addEntryFromDb, addTransfer as addTransferFromDb } from '../db/entry';
+import { remove as removeEntryFromDb, add as addEntryFromDb, addTransfer as addTransferFromDb, update as updateEntryFromDb } from '../db/entry';
 import type { Account, Entry } from './types';
 
 const NAMESPACE = 'account';
@@ -80,6 +80,21 @@ export const addTransfer = createAsyncThunk<
   },
 );
 
+type EntryUpdate = Parameters<typeof updateEntryFromDb>[0];
+export const updateEntry = createAsyncThunk<
+  boolean,
+  EntryUpdate,
+  {}
+>(
+  `${NAMESPACE}/updateEntry`,
+  async (entry, thunkApi) => {
+    await updateEntryFromDb(entry);
+
+    await thunkApi.dispatch(getAll());
+    return true;
+  },
+);
+
 export const removeEntry = createAsyncThunk<
   boolean,
   Account['entries'][0]['id'],
@@ -93,7 +108,6 @@ export const removeEntry = createAsyncThunk<
     return true;
   },
 );
-
 
 const accountSlice = createSlice({
   name: NAMESPACE,

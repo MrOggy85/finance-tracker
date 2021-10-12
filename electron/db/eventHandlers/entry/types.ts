@@ -6,6 +6,12 @@ export type Add = {
   arg: Parameters<typeof entryRepo.add>[0];
 };
 
+export type Update = {
+  entity: 'entry';
+  operation: 'update';
+  arg: Parameters<typeof entryRepo.update>[0];
+};
+
 export type Remove = {
   entity: 'entry';
   operation: 'remove';
@@ -18,5 +24,5 @@ export type AddTransfer = {
   arg: Parameters<typeof entryRepo.addTransfer>[0];
 };
 
-type Entry = Add | Remove | AddTransfer;
+type Entry = Add | Update | Remove | AddTransfer;
 export default Entry;

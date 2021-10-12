@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
 import NavItem from 'react-bootstrap/NavItem';
+import WithRedux from './core/redux/WithRedux';
 import styles from './App.module.css';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
@@ -13,13 +14,14 @@ import Future from './pages/Future';
 import DailyCheckIn from './pages/DailyCheckIn';
 import Category from './pages/Category';
 import QuickEntry from './pages/QuickEntry';
-import WithRedux from './core/redux/WithRedux';
+import Account from './pages/Account';
 import BankTab from './components/BankTab';
 import { ComponentProps } from 'react';
 import autoLoginPrestia from './core/autoLoginPrestia';
 import autoLoginRakutenBank from './core/autoLoginRakutenBank';
 
 const HomeWithRedux = WithRedux(Home);
+const AccountWithRedux = WithRedux(Account);
 const QuickEntryWithRedux = WithRedux(QuickEntry);
 const BankTabWithRedux = WithRedux<ComponentProps<typeof BankTab>>(BankTab);
 const CategoryWithRedux = WithRedux<ComponentProps<typeof Category>>(Category);
@@ -49,6 +51,9 @@ function App() {
           <LinkItem url="/dashboard" text="Dashboard" />
         </NavItem>
         <NavItem>
+          <LinkItem url="/account" text="Account" />
+        </NavItem>
+        <NavItem>
           <LinkItem url="/future" text="Future" />
         </NavItem>
         <NavItem>
@@ -76,6 +81,9 @@ function App() {
         </Route>
         <Route path="/dashboard">
           <Dashboard />
+        </Route>
+        <Route path="/account">
+          <AccountWithRedux />
         </Route>
       </Switch>
       <Future visible={location.pathname === '/future'} />

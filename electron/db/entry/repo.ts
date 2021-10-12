@@ -54,6 +54,23 @@ export async function getAll() {
   return all;
 }
 
+type EntryUpdate = Omit<Entry, 'account' | 'category'>;
+
+export async function update(updateEntry: EntryUpdate) {
+  const repository = await getRepository();
+  const entity = await repository.findOne({ id: updateEntry.id });
+
+  entity.amount = updateEntry.amount;
+  entity.date = updateEntry.date;
+  entity.description = updateEntry.description;
+  entity.accountId = updateEntry.accountId;
+
+  const category = await categoryRepo.get(updateEntry.categoryId);
+  entity.category = category;
+
+  await save(entity);
+}
+
 export async function remove(id: Entry['id']) {
   const repository = await getRepository();
   await repository.delete({ id });

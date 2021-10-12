@@ -1,6 +1,6 @@
 import * as entryRepo from "../../entry/repo";
 import type { Param } from "../types";
-import type { Add, Remove, AddTransfer } from './types';
+import type { Add, Update, Remove, AddTransfer } from './types';
 
 async function handler({ operation, arg }: Omit<Param, 'entity'>) {
   switch (operation) {
@@ -10,6 +10,10 @@ async function handler({ operation, arg }: Omit<Param, 'entity'>) {
 
     case 'add-transfer':
       await entryRepo.addTransfer(arg as AddTransfer['arg']);
+      return;
+
+    case 'update':
+      await entryRepo.update(arg as Update['arg']);
       return;
 
     case 'remove':

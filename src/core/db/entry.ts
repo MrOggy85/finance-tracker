@@ -2,7 +2,6 @@ import type Entry from "../../../electron/db/entry/Entry";
 import send from "./send";
 
 type EntryAdd = Omit<Entry, 'id' | 'account' | 'category'>;
-
 export function add(entry: EntryAdd) {
   return send({
     entity: 'entry',
@@ -12,12 +11,20 @@ export function add(entry: EntryAdd) {
 }
 
 type TransferAdd = Omit<EntryAdd, 'categoryId' | 'accountId'>;
-
 export function addTransfer(newEntry: TransferAdd, sourceAccountId: number, destinationAccountId: number) {
   return send({
     entity: 'entry',
     operation: 'add-transfer',
     arg: { newEntry, sourceAccountId, destinationAccountId },
+  });
+}
+
+type EntryUpdate = Omit<Entry, 'account' | 'category'>;
+export function update(entry: EntryUpdate) {
+  return send({
+    entity: 'entry',
+    operation: 'update',
+    arg: entry,
   });
 }
 
